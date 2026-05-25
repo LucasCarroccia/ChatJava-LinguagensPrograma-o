@@ -5,6 +5,7 @@ public class ClientHandler extends Thread{
 
     private Socket socket;
     private PrintWriter output;
+    private String nome;
 
     public ClientHandler(Socket socket){
         this.socket = socket;
@@ -19,16 +20,20 @@ public class ClientHandler extends Thread{
 
             output= new PrintWriter(socket.getOutputStream(), true);
 
+            nome = input.readLine();
+
+            System.out.println(nome + " entrou na conversa");
+
             String message;
 
             while((message = input.readLine()) != null){
 
-                System.out.println("Cliente enviou a mensagem: " + message);
-                megafone(message);
+                System.out.println(nome + " enviou a mensagem: " + message);
+                megafone(nome+ " disse: "+ message);
             }
         }
         catch (IOException e){
-            System.out.println("Cliente desconectou");
+            System.out.println("Cliente" + nome +  "desconectou");
         }
     }
 
@@ -39,9 +44,8 @@ public class ClientHandler extends Thread{
     public void megafone(String message){
 
         for(ClientHandler client: servidor.clients){
-            if(client != this){
-                client.enviarMensagem(message);
-            }
+
+            client.enviarMensagem(message);
         }
     }
 }

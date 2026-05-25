@@ -1,4 +1,4 @@
-/*import javax.swing.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.time.LocalTime;
@@ -160,12 +160,6 @@ public class Chat extends JFrame {
         // ENVIA PELO SOCKET
         output.println(texto);
 
-        // MOSTRA NA TELA
-        // true = mensagem enviada por mim
-        adicionarMensagem(
-                nomeUsuario + ": " + texto,
-                true
-        );
 
         // LIMPA O CAMPO
         campoMensagem.setText("");
@@ -256,4 +250,5 @@ public class Chat extends JFrame {
                 mensagemPanel.getBounds()
         );
     }
-} */
+}
+

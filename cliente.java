@@ -15,7 +15,13 @@ public class cliente {
 
             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
 
-            System.out.println("Conectado ao servidor. Digite mensagens:");
+            System.out.println("Conectado ao servidor. Digite seu nome:");
+
+            String nome = userInput.readLine();
+
+            output.println(nome);
+
+            System.out.println("Olá "+ nome+ ", Comece a conversar\n");
 
             Thread receiveThread = new Thread(() -> {
                 try{
