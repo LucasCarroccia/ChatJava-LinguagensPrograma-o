@@ -1,261 +1,259 @@
-/*import  javax.swing . * ;
-import  javax.swing.border.EmptyBorder ;​​​​​​
-import  java.awt . * ;
-import  java.time.LocalTime ;​​​​
-import  java.time.format.DateTimeFormatter ;​​​​​​
+/*import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 // IMPORT NECESSÁRIO PARA ENVIAR MENSAGENS PELA REDE
-importar  java . ei . PrintWriter ;
+import java.io.PrintWriter;
 
-public  class  Chat  extends  JFrame {
+public class Chat extends JFrame {
 
     // PAINEL ONDE AS MENSAGENS SERÃO MOSTRADAS
-    JPanel  painelMensagens ;
+    JPanel painelMensagens;
 
     // CAMPO DE TEXTO PARA DIGITAR
-    JTextField  campoMensagem ;
+    JTextField campoMensagem;
 
     // BOTÃO DE ENVIAR
-    JButton  botaoEnviar ;
+    JButton botaoEnviar;
 
     // GUARDA A CONEXÃO DE SAÍDA
     // ISSO PERMITE ENVIAR MENSAGENS PELO SOCKET
-     Saída PrintWriter  privada ;
+    private PrintWriter output;
 
     // GUARDA O NOME DA JANELA
-     string  privada nomeUsuario ;
+    private String nomeUsuario;
 
     // CONSTRUTOR
-    // RECEBER:
-    // saída -> bombe de rede
+    // RECEBE:
+    // output -> conexão de rede
     // nomeUsuario -> nome da janela
-    público  Chat ( PrintWriter  saída , String  nomeUsuario ) {
+    public Chat(PrintWriter output, String nomeUsuario) {
 
         // SALVA A CONEXÃO
-        isto.saída = saída ;​​
+        this.output = output;
 
         // SALVA O NOME
-        este . nomeUsuario = nomeUsuario ;
+        this.nomeUsuario = nomeUsuario;
 
         // TÍTULO DA JANELA
-        setTitle ( nomeUsuario + " - InstantMessenger" );
+        setTitle(nomeUsuario + " - InstantMessenger");
 
-        setSize ( 600 , 855 );
+        setSize(600, 855);
 
-        setDefaultCloseOperation ( JFrame . EXIT_ON_CLOSE );
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        definirLocalizaçãoRelativaA ( nulo );
+        setLocationRelativeTo(null);
 
-        setLayout ( novo  BorderLayout ());
+        setLayout(new BorderLayout());
 
-        // PRINCIPAL DO PAINEL
-        JPanel  painelPrincipal = new  JPanel ( new  BorderLayout ());
+        // PAINEL PRINCIPAL
+        JPanel painelPrincipal = new JPanel(new BorderLayout());
 
-        painelPrincipal.setBackground ( new Color ( 48 , 48 , 48 ) ) ; 
+        painelPrincipal.setBackground(new Color(48,48,48));
 
         // TOPO
 
-        JPanel  topo = new  JPanel ( new  FlowLayout ( FlowLayout . LEFT ));
+        JPanel topo = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        topo.setBackground ( new Color ( 48 , 48 , 48 ) ) ; 
+        topo.setBackground(new Color(48,48,48));
 
-        topo.setPreferredSize ( new Dimension ( 600 , 70 ) ) ; 
+        topo.setPreferredSize(new Dimension(600,70));
 
         // NOME NO TOPO
-        JLabel  nomeChat = new  JLabel ( nomeUsuario );
+        JLabel nomeChat = new JLabel(nomeUsuario);
 
-        nomeChat.setForeground ( Color.WHITE ) ;​​​
+        nomeChat.setForeground(Color.WHITE);
 
-        nomeChat.setFont ( new Font ( " Arial " , Font.BOLD , 24 ) ) ; 
+        nomeChat.setFont(new Font("Arial", Font.BOLD, 24));
 
-        topo.adicionar ( nomeChat ) ;​
+        topo.add(nomeChat);
 
-        painelMensagens = new  JPanel ();
+        painelMensagens = new JPanel();
 
-        painelMensagens . setLayout (
-                novo  BoxLayout (
-                        painelMensagens ,
-                        BoxLayout . Eixo Y
+        painelMensagens.setLayout(
+                new BoxLayout(
+                        painelMensagens,
+                        BoxLayout.Y_AXIS
                 )
         );
 
-        painelMensagens . setBackground ( nova  Cor ( 115 , 108 , 108 ));
+        painelMensagens.setBackground(new Color(115,108,108));
 
-        JScrollPane  scroll = new  JScrollPane ( painelMensagens );
+        JScrollPane scroll = new JScrollPane(painelMensagens);
 
-        scroll.setBorder ( null ) ;​
+        scroll.setBorder(null);
 
         // PARTE INFERIOR
 
-        JPanel  painelInferior = novo  JPanel ( novo  BorderLayout ());
+        JPanel painelInferior = new JPanel(new BorderLayout());
 
-        painelInferior . definirBorda (
-                novo  EmptyBorder ( 10 , 10 , 10 , 10 )
+        painelInferior.setBorder(
+                new EmptyBorder(10,10,10,10)
         );
 
-        painelInferior.setBackground ( Color.GRAY ) ;​​​
+        painelInferior.setBackground(Color.GRAY);
 
         // CAMPO DE TEXTO
-        campoMensagem = novo  JTextField ();
+        campoMensagem = new JTextField();
 
-        campoMensagem . setPreferredSize (
-                nova  Dimensão ( 100 , 35 )
+        campoMensagem.setPreferredSize(
+                new Dimension(100,35)
         );
 
-        campoMensagem . setFont (
-                nova  fonte ( "Arial" , Fonte . PLAIN , 18 )
+        campoMensagem.setFont(
+                new Font("Arial", Font.PLAIN, 18)
         );
 
         // BOTÃO ENVIAR
 
-        botaoEnviar = new  JButton ( "➤" );
+        botaoEnviar = new JButton("➤");
 
-        botaoEnviar.setBackground ( new Color ( 48 , 48 , 48 ) ) ; 
+        botaoEnviar.setBackground(new Color(48,48,48));
 
-        botaoEnviar.setForeground ( Color.WHITE ) ;​​​
+        botaoEnviar.setForeground(Color.WHITE);
 
-        botaoEnviar.setFocusPainted ( false ) ;​
+        botaoEnviar.setFocusPainted(false);
 
         // =========================
         // EVENTOS
         // =========================
 
         // CLICAR NO BOTÃO
-        botaoEnviar . addActionListener (
-                e -> enviarMensagem ()
+        botaoEnviar.addActionListener(
+                e -> enviarMensagem()
         );
 
         // APERTAR ENTER
-        campoMensagem . adicionarOuvinteDeAção (
-                e -> enviarMensagem ()
+        campoMensagem.addActionListener(
+                e -> enviarMensagem()
         );
 
         // ADICIONA ELEMENTOS
-        painelInferior . add ( campoMensagem , BorderLayout.CENTER ) ;​
+        painelInferior.add(campoMensagem, BorderLayout.CENTER);
 
-        painelInferior . add ( botaoEnviar , BorderLayout . EAST );
+        painelInferior.add(botaoEnviar, BorderLayout.EAST);
 
         // MONTA O LAYOUT
-        painelPrincipal.add ( topo , BorderLayout.NORTH ) ;​​​
+        painelPrincipal.add(topo, BorderLayout.NORTH);
 
-        painelPrincipal.add ( scroll , BorderLayout.CENTER ) ;​​​
+        painelPrincipal.add(scroll, BorderLayout.CENTER);
 
-        painelPrincipal . add ( painelInferior , BorderLayout . SOUTH );
+        painelPrincipal.add(painelInferior, BorderLayout.SOUTH);
 
-        adicionar ( painelPrincipal );
+        add(painelPrincipal);
 
-        definirVisível ( verdadeiro );
+        setVisible(true);
     }
 
     // MÉTODO RESPONSÁVEL POR ENVIAR MENSAGENS
 
-    private  void  enviarMensagem () {
+    private void enviarMensagem() {
 
-        // PEGA O TEXTO DIGITAL
-        String  texto = campoMensagem . getText ();
+        // PEGA O TEXTO DIGITADO
+        String texto = campoMensagem.getText();
 
         // SE ESTIVER VAZIO NÃO ENVIA
-        se ( texto.isEmpty ( ) ) retorne ;
+        if(texto.isEmpty()) return;
 
         // ENVIA PELO SOCKET
-        saída.println ( texto ) ;​
+        output.println(texto);
 
         // MOSTRA NA TELA
         // true = mensagem enviada por mim
-        adicionarMensagem (
-                nomeUsuario + ": " + texto ,
-                verdadeiro
+        adicionarMensagem(
+                nomeUsuario + ": " + texto,
+                true
         );
 
         // LIMPA O CAMPO
-        campoMensagem . setText ( "" );
+        campoMensagem.setText("");
     }
 
     // MÉTODO PARA ADICIONAR MENSAGENS
-    public  void  adicionarMensagem (
-             Texto em string ,
-            boolean  minhaMensagem
+    public void adicionarMensagem(
+            String texto,
+            boolean minhaMensagem
     ) {
 
         // PEGA HORÁRIO ATUAL
-        String  horario = LocalTime.now ( ) . format (
-                FormatadorDataHora.dePadrão ( "HH: mm " )
+        String horario = LocalTime.now().format(
+                DateTimeFormatter.ofPattern("HH:mm")
         );
 
-        // DEFINIR O LADO DA MENSAGEM
+        // DEFINE O LADO DA MENSAGEM
 
 
-        JPanel  mensagemPanel ;
+        JPanel mensagemPanel;
 
-        se ( minhaMensagem ){
+        if(minhaMensagem){
 
             // MENSAGEM ENVIADA
             // FICA NA DIREITA
-            mensagemPanel = novo  JPanel (
-                    novo  FlowLayout ( FlowLayout . DIREITA )
+            mensagemPanel = new JPanel(
+                    new FlowLayout(FlowLayout.RIGHT)
             );
 
-        } outro {
+        } else {
 
             // MENSAGEM RECEBIDA
             // FICA NA ESQUERDA
-            mensagemPanel = novo  JPanel (
-                    novo  FlowLayout ( FlowLayout . LEFT )
+            mensagemPanel = new JPanel(
+                    new FlowLayout(FlowLayout.LEFT)
             );
         }
 
-        mensagemPanel . definirBackground (
-                nova  cor ( 115 , 108 , 108 )
+        mensagemPanel.setBackground(
+                new Color(115,108,108)
         );
 
         // TEXTO DA MENSAGEM
-        JLabel  mensagem = new  JLabel (
-                texto + " " + horário
+        JLabel mensagem = new JLabel(
+                texto + "   " + horario
         );
 
-        mensagem . setOpaque ( verdadeiro );
+        mensagem.setOpaque(true);
 
 
-        se ( minhaMensagem ){
+        if(minhaMensagem){
 
             // SUA MENSAGEM
-            mensagem . setBackground (
-                    nova  cor ( 153 , 154 , 166 )
+            mensagem.setBackground(
+                    new Color(153,154,166)
             );
 
-        } outro {
+        } else {
 
             // MENSAGEM RECEBIDA
-            mensagem . setBackground (
-                    nova  cor ( 230 , 230 , 230 )
+            mensagem.setBackground(
+                    new Color(230,230,230)
             );
         }
 
         // BORDA INTERNA
-        mensagem . definirBorda (
-                novo  EmptyBorder ( 10 , 15 , 10 , 15 )
+        mensagem.setBorder(
+                new EmptyBorder(10,15,10,15)
         );
 
         // FONTE
-        mensagem . definirFonte (
-                nova  fonte ( "Arial" , Fonte . PLAIN , 16 )
+        mensagem.setFont(
+                new Font("Arial", Font.PLAIN, 16)
         );
 
         // ADICIONA MENSAGEM NO PAINEL
-        mensagemPanel . adicionar ( mensagem );
+        mensagemPanel.add(mensagem);
 
-        painelMensagens . adicionar ( mensagemPanel );
+        painelMensagens.add(mensagemPanel);
 
-        // ATUALIZAR TELA
-        painelMensagens . revalidar ();
+        // ATUALIZA TELA
+        painelMensagens.revalidate();
 
-        painelMensagens . repintar ();
+        painelMensagens.repaint();
 
-        // ROLAGEM AUTOMÁTICA
-        painelMensagens . scrollRectToVisible (
-                mensagemPanel.getBounds ( )​
+        // AUTO SCROLL
+        painelMensagens.scrollRectToVisible(
+                mensagemPanel.getBounds()
         );
     }
-}
-
- */
+} */
